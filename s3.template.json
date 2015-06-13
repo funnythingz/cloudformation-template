@@ -1,0 +1,46 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Parameters": {
+  },
+  "Resources": {
+    "DemoBucket" : {
+      "Type" : "AWS::S3::Bucket",
+      "Properties" : {
+        "AccessControl" : "PublicReadWrite",
+        "BucketName" : "funny-demo",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "demo"
+          },
+          {
+            "Key": "Role",
+            "Value": "s3"
+          }
+        ]
+      }
+    },
+    "DemoBucketPolicy" : {
+      "Type" : "AWS::S3::BucketPolicy",
+      "Properties" : {
+        "Bucket" : { "Ref" : "DemoBucket" },
+        "PolicyDocument" : {
+          "Version": "2008-10-17",
+          "Statement": [
+            {
+              "Sid": "PublicReadGetObject",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Action": "s3:GetObject",
+              "Resource": "arn:aws:s3:::funny-demo/*"
+            }
+          ]
+        }
+      },
+      "DependsOn": "DemoBucket"
+    }
+  },
+  "Description": "s3"
+}
